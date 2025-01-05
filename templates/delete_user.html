@@ -1,0 +1,44 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Dapatkan semua tombol delete
+    const deleteButtons = document.querySelectorAll(".delete-button");
+
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.preventDefault(); // Mencegah redirect default
+        const userId = button.getAttribute("data-id");
+
+        // Tampilkan modal SweetAlert2
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+          allowOutsideClick: false, // Mencegah penutupan dengan klik di luar
+          allowEscapeKey: false,   // Mencegah penutupan dengan tombol Escape
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Tampilkan konfirmasi penghapusan
+            Swal.fire({
+              title: "Deleted!",
+              text: "The user has been deleted.",
+              icon: "success",
+              showConfirmButton: false, // Tidak perlu tombol konfirmasi
+              timer: 2000, // Tetap tampil selama 2 detik sebelum redirect
+            });
+            
+            // Redirect ke route Flask dengan ID pengguna setelah modal selesai
+            setTimeout(() => {
+              window.location.href = `/delete_user/${userId}`;
+            }, 2000);
+            
+          }
+        });
+      });
+    });
+  });
+</script>
